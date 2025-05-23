@@ -1,11 +1,11 @@
-name: SISG2024_Association_Mapping
+name: SISG2025_Association_Mapping
 output_dir: ../docs
 exclude:
 - ../data/*
 - ../code/*
 - ../lectures/*
 navbar:
-  title: SISG 2024 Module 19
+  title: SISG 2025 Module 19
   left:
   - text: Home
     href: index.html
@@ -40,7 +40,7 @@ navbar:
   right:
   - icon: fab fa-github
     text: Source code
-    href: https://github.com/joellembatchou/SISG2024_Association_Mapping
+    href: https://github.com/joellembatchou/SISG2025_Association_Mapping
 output:
   workflowr::wflow_html:
     toc: yes

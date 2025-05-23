@@ -18,12 +18,12 @@ library(data.table)
 ## Case-Control Association Testing
 
 ### Introduction
-We will be using the [LHON dataset](https://raw.githubusercontent.com/joellembatchou/SISG2024_Association_Mapping/master/data/LHON.txt) covered in the lecture notes for this portion of the exercises.
+We will be using the [LHON dataset](https://raw.githubusercontent.com/joellembatchou/SISG2025_Association_Mapping/master/data/LHON.txt) covered in the lecture notes for this portion of the exercises.
 The LHON dataset is from a case-control study and includes both phenotype and genotype data for a candidate gene.
 
 Let's first load the LHON data file into the R session. We need to define the path to the file (if you have it downloaded on your machine, change the path to the file location).
 ```{r set-lhon-file}
-LHON_FILE <- "https://raw.githubusercontent.com/joellembatchou/SISG2024_Association_Mapping/master/data/LHON.txt" 
+LHON_FILE <- "https://raw.githubusercontent.com/joellembatchou/SISG2025_Association_Mapping/master/data/LHON.txt" 
 ```
 
 We can now read the file
@@ -104,12 +104,12 @@ GENO_additive_T <- 0 + 1 * (LHON$GENO == "CT") + 2 * (LHON$GENO == "TT")
 ## Association Testing with Quantitative Traits
 
 ### Introduction
-We will be using the [Blood Pressure dataset](https://raw.githubusercontent.com/joellembatchou/SISG2024_Association_Mapping/master/data/bpdata.csv) for this portion of the exercises.
+We will be using the [Blood Pressure dataset](https://raw.githubusercontent.com/joellembatchou/SISG2025_Association_Mapping/master/data/bpdata.csv) for this portion of the exercises.
 This dataset contains diastolic and systolic blood pressure measurements for 1000 individuals, and genotype data at 11 SNPs in a candidate gene for blood pressure. Covariates such as gender (sex) and body mass index (bmi) are included as well.
 
 Let's first load the file into R. We need to define the path to the file (if you have it downloaded on your machine, change the path to the file location).
 ```{r set-bp-data, results = 'hide'}
-BP_FILE <- "https://raw.githubusercontent.com/joellembatchou/SISG2024_Association_Mapping/master/data/bpdata.csv" 
+BP_FILE <- "https://raw.githubusercontent.com/joellembatchou/SISG2025_Association_Mapping/master/data/bpdata.csv" 
 ```
 
 Use the following command to read it into R:

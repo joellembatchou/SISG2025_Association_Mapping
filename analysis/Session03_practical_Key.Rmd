@@ -23,14 +23,14 @@ library(ggplot2)
 We will be analyzing a simulated data set which contains sample structure to better understand the impact it can have in GWAS analyses if not accounted for. 
 We will perform GWAS on a quantitative phenotype which was simulated with high heritability and polygenic.
 
-The file ["sim_rels_pheno.txt"](https://github.com/joellembatchou/SISG2024_Association_Mapping/tree/master/data)” contains the phenotype measurements for a set of individuals and the file "sim_rels_geno.bed" is a binary file in PLINK BED format with accompanying BIM and FAM files which contains the genotype data **at null variants** (i.e. not associated with the phenotype).  
+The file ["sim_rels_pheno.txt"](https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/master/data)” contains the phenotype measurements for a set of individuals and the file "sim_rels_geno.bed" is a binary file in PLINK BED format with accompanying BIM and FAM files which contains the genotype data **at null variants** (i.e. not associated with the phenotype).  
 
 *How should we expect the QQ/Manhatthan plots to look like under this scenario?*
 
 ### Data preparation
 Let’s first load the simulated data into the R session. We need to define the path to the directory containing the phenotype and genotype files (change the path to the files location).
 ```{r echo=FALSE}
-files_dir <- "/Users/joelle.mbatchou/SISG/2024/SISG2024_Association_Mapping/data/" 
+files_dir <- "/Users/joelle.mbatchou/SISG/2025/SISG2025_Association_Mapping/data/" 
 plink2_binary <- "/Users/joelle.mbatchou/software/bins/plink2" 
 regenie_binary <- "/Users/joelle.mbatchou/software/bins/regenie"
 ```

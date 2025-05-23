@@ -21,7 +21,7 @@ library(ggplot2)
 ## Introduction
 We will be working with a subset of the genotype data from the Human Genome Diversity Panel (HGDP) and HapMap.
 
-The file “[YRI_CEU_ASW_MEX_NAM.bed](https://github.com/joellembatchou/SISG2024_Association_Mapping/tree/master/data)” is a binary file in PLINK BED format with accompanying BIM and FAM files.
+The file “[YRI_CEU_ASW_MEX_NAM.bed](https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/master/data)” is a binary file in PLINK BED format with accompanying BIM and FAM files.
 It contains the genotype data at autosomal SNPs (i.e. chromosomes 1-22) for:
 
 * Native American samples from HGDP
@@ -32,13 +32,13 @@ Northern and Western Europe (CEU)
   + Mexican Americans in Los Angeles, California (MXL)
   + African Americans from the south-western United States (ASW)
 
-**File with ancestry labels assignment for each sample**: [Population_Sample_Info.txt](https://raw.githubusercontent.com/joellembatchou/SISG2024_Association_Mapping/master/data/Population_Sample_Info.txt) 
+**File with ancestry labels assignment for each sample**: [Population_Sample_Info.txt](https://raw.githubusercontent.com/joellembatchou/SISG2025_Association_Mapping/master/data/Population_Sample_Info.txt) 
 
 ### Data preparation
 Let’s first load the HGDP data into the R session. We need to define the path to the directory containing the PLINK BED and the ancestry label files (change the path to the file location).
 ```{r echo=FALSE}
 # change this to the directory on your machine
-HGDP_dir <- "/Users/joelle.mbatchou/SISG/2024/SISG2024_Association_Mapping/data/" 
+HGDP_dir <- "/Users/joelle.mbatchou/SISG/2025/SISG2025_Association_Mapping/data/" 
 plink2_binary <- "/Users/joelle.mbatchou/software/bins/plink2" 
 ```
 
