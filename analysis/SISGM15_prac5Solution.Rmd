@@ -199,7 +199,7 @@ ls -lt ldRef.*
 You can now run COJO. Either from the terminal
 
 ```{bash, eval=TRUE}
-GCTA=exe/gcta-1.94.1
+GCTA=exe/gcta64_v1.94
 ${GCTA} --bfile ldRef --cojo-file GWAS.ma --chr 10 --cojo-slct --cojo-p 2.5e-5 --out test1
 ```
 
