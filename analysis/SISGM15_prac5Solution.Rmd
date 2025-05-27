@@ -290,3 +290,7 @@ print( table(cojo4$SNP%in%snps[icausal]) ) ## Count how many are causal
 ```
 
 <span style="color:red;">Conclusion: using a more stringent collinearity threshold can reduce the proportion of false positives.</span>
+
+```{bash, eval=TRUE, include=FALSE}
+rm -f GWAS.ma ldRef.* test[1-4].*.cojo test[1-4].log
+```
