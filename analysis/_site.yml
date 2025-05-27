@@ -5,7 +5,7 @@ exclude:
 - ../code/*
 - ../lectures/*
 navbar:
-  title: SISG 2025 Module 19
+  title: SISG 2025 QG3
   left:
   - text: Home
     href: index.html
@@ -17,22 +17,22 @@ navbar:
       href: Session01_practical.html
     - text: Session 2
       href: Session02_practical.html
-    - text: '---------'
-    - text: Day 2
     - text: Session 3
       href: Session03_practical.html
     - text: Session 4
       href: SISGM15_prac4.html
+    - text: '---------'
+    - text: Day 2
     - text: Session 5
       href: SISGM15_prac5.html
     - text: Session 6
       href: SISGM15_prac6.html
-    - text: '---------'
-    - text: Day 3
     - text: Session 7
       href: Session07_practical.html
     - text: Session 8
       href: Session08_practical.html
+    - text: '---------'
+    - text: Day 3
     - text: Session 9
       href: SISGM15_prac9.html
   - text: License
