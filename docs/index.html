@@ -406,7 +406,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -417,8 +417,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -427,13 +427,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-05-27
+<strong>Last updated:</strong> 2025-05-28
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong>
@@ -457,21 +457,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -562,15 +559,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree7867600d52bf60a33d044afd07ff165e767ea5c8targetblank7867600a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree83f0871084824912e1c0f844f9c845221b2c23b3targetblank83f0871a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/7867600d52bf60a33d044afd07ff165e767ea5c8" target="_blank">7867600</a>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/83f0871084824912e1c0f844f9c845221b2c23b3" target="_blank">83f0871</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree7867600d52bf60a33d044afd07ff165e767ea5c8targetblank7867600a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree83f0871084824912e1c0f844f9c845221b2c23b3targetblank83f0871a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -580,7 +577,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/7867600d52bf60a33d044afd07ff165e767ea5c8" target="_blank">7867600</a>.
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/83f0871084824912e1c0f844f9c845221b2c23b3" target="_blank">83f0871</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -609,10 +606,7 @@ Ignored files:
 Untracked files:
     Untracked:  .mk_website.R.swp
     Untracked:  _workflowr.yml
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
+    Untracked:  analysis/.index.Rmd.swp
 
 </code></pre>
 <p>
@@ -657,6 +651,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/blob/83f0871084824912e1c0f844f9c845221b2c23b3/analysis/index.Rmd" target="_blank">83f0871</a>
+</td>
+<td>
+Joelle Mbatchou
+</td>
+<td>
+2025-05-28
+</td>
+<td>
+update index
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/joellembatchou/SISG2025_Association_Mapping/0a8f6f5d415285745b2b82faff96a64710b75303/docs/index.html" target="_blank">0a8f6f5</a>
+</td>
+<td>
+Joelle Mbatchou
+</td>
+<td>
+2025-05-28
+</td>
+<td>
+add docs folder
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/blob/d44b4533aa14b694926f7974c1b7ed0f8f965cde/analysis/index.Rmd" target="_blank">d44b453</a>
+</td>
+<td>
+Joelle Mbatchou
+</td>
+<td>
+2025-05-27
+</td>
+<td>
+cleanup edit
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -782,12 +827,10 @@ Key
 1
 </td>
 <td style="text-align:left;">
-Introduction, Case Control Association Testing &amp; Association Testing
-with Quantitative Traits
+Case Control Association Testing &amp; Association Testing with
+Quantitative Traits
 </td>
 <td style="text-align:left;">
-<a
-href="https://gatech.box.com/s/q6fhf1vnztrgqfaij9qcjgw4a4c7q8sg">Intro</a>,
 <a
 href="https://gatech.box.com/s/j01hvhc6ezprpg3lljqy55b14c6w3d3n">Lecture</a>
 </td>
@@ -1025,45 +1068,6 @@ href="https://gatech.box.com/s/gimv6rcoiiz5ywkznx8999c76drfrrlv">Lecture</a>
 <tr>
 <td style="text-align:left;">
 10:30am-12pm
-</td>
-<td style="text-align:center;">
-10
-</td>
-<td style="text-align:left;">
-Emerging issues showcasing ongoing research
-</td>
-<td style="text-align:left;">
-Lecture
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-1:30pm-3pm
-</td>
-<td style="text-align:center;">
-9
-</td>
-<td style="text-align:left;">
-Beyond traditional GWAS: Variance QTL, Interaction Testing, GWAX,
-Time-to-event, Multi-trait analysis
-</td>
-<td style="text-align:left;">
-<a
-href="https://gatech.box.com/s/gimv6rcoiiz5ywkznx8999c76drfrrlv">Lecture</a>
-</td>
-<td style="text-align:left;">
-<a href="SISGM15_prac9.html">Exercises</a>
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3:30pm-5pm
 </td>
 <td style="text-align:center;">
 10
