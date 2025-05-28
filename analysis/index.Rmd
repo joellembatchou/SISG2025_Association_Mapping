@@ -81,13 +81,13 @@ data.frame(
   Time = c("8:30am-10am", "10:30am-12pm", "1:30pm-3pm", "3:30pm-5pm"),
   Session = 1:4,
   Topic = c(
-    "Introduction, Case Control Association Testing & Association Testing with Quantitative Traits",
+    "Case Control Association Testing & Association Testing with Quantitative Traits",
     "Introduction to the PLINK Software for GWAS & Population Structure Inference",
     "GWAS in Samples with Structure & Introduction to the REGENIE Software",
     "Power, Sample Size & Design Considerations"
     ),
   Lecture = c(
-    paste0(print.link("Intro", "https://gatech.box.com/s/q6fhf1vnztrgqfaij9qcjgw4a4c7q8sg"), ", ", print.link("Lecture", "https://gatech.box.com/s/j01hvhc6ezprpg3lljqy55b14c6w3d3n")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/j01hvhc6ezprpg3lljqy55b14c6w3d3n")),
     paste0(print.link("Lecture", "https://gatech.box.com/s/kb88kztraktpv9nxh6wtuo89f8fubd7r")),
     paste0(print.link("Lecture", "https://gatech.box.com/s/l5yfz14ticpiwp5slizrpibr8xmdnp47")),
     paste0(print.link("Lecture", "https://gatech.box.com/s/i8b0l7tlw2r8d7scgluip4e5c8qtam03"))
@@ -156,7 +156,7 @@ kableExtra::kable_styling(bootstrap_options = c("hover", "condensed","striped"))
 
 ```{r wed-sched, echo = FALSE, results = "asis"}
 data.frame(
-  Time = c("8:30am-10am", "10:30am-12pm", "1:30pm-3pm", "3:30pm-5pm"),
+  Time = c("8:30am-10am", "10:30am-12pm"),
   Session = 8 + 1:2,
   Topic = c(
     "Beyond traditional GWAS: Variance QTL, Interaction Testing, GWAX, Time-to-event, Multi-trait analysis",
