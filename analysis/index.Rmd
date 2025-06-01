@@ -17,7 +17,7 @@ print.link <- function(name, link) {
 }
 ```
 
-Instructors: Joelle Mbatchou & TBD
+Instructors: Joelle Mbatchou & Michael Epstein
 
 You will find on this website link to lecture slides, exercises including some solutions, and link to the class video recordings.
 
@@ -27,9 +27,9 @@ The official SISG web page can be found [here](https://sisg.biosciences.gatech.e
 ## Session Format
 The module has 10 sessions, each of 90 minutes. The standard format for a session is approximately:
 
-* 45 minutes of lecture material that will be recorded via Zoom live
+* 45 minutes of lecture material
 * 30 minutes of exercises for you to try 
-* 15 minute discussion of exercises, where the instructors will present possible solutions and answer questions
+* 15 minute discussion of exercises, where the instructors will present possible solutions and Q&A
 
 Each session builds on previous sessions so you will get maximum benefit by attending every session and in sequence.
 
@@ -84,29 +84,29 @@ data.frame(
     "Case Control Association Testing & Association Testing with Quantitative Traits",
     "Introduction to the PLINK Software for GWAS & Population Structure Inference",
     "GWAS in Samples with Structure & Introduction to the REGENIE Software",
-    "Power, Sample Size & Design Considerations"
+    "Rare Variant Analysis: Collapsing Tests, Kernel (Variance Component) Tests and Omnibus Tests"
     ),
   Lecture = c(
-    paste0(print.link("Lecture", "https://gatech.box.com/s/j01hvhc6ezprpg3lljqy55b14c6w3d3n")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/kb88kztraktpv9nxh6wtuo89f8fubd7r")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/l5yfz14ticpiwp5slizrpibr8xmdnp47")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/i8b0l7tlw2r8d7scgluip4e5c8qtam03"))
+    paste0(print.link("Lecture", "https://gatech.box.com/s/yjb8q69k4e63ogufooccrfkd097di3m2")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/e3mbpg5i590dzcz8fhedhwjszq8fjsve")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/tuhlzrrfosl4i7zgd2gqp0yir2b428zh")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/tqgn2agytnu1gltndcvqjfirag4j87jt"))
       ),
   "Exercises" = c(
-    paste0(print.link("Exercises", "Session01_practical.html")),
-    paste0(print.link("Exercises", "Session02_practical.html")),
-    paste0(print.link("Exercises", "Session03_practical.html")),
-    paste0(print.link("Exercises", "SISGM15_prac4.html"))
+    paste0(print.link("Exercises", "QG3_Association_Testing_practical.html")),
+    paste0(print.link("Exercises", "QG3_Plink_Population_Structure_practical.html")),
+    paste0(print.link("Exercises", "QG3_Relatedness_REGENIE_practical.html")),
+    paste0(print.link("Exercises", "QG3_RV_tests_practical.html"))
   ),
   "Key" = c(
     "",
-    #paste0(print.link("HTML", "Session01_practical_Key.html")),
+    #paste0(print.link("HTML", "QG3_Association_Testing_practical_Key.html")),
     "",
-    #paste0(print.link("HTML", "Session02_practical_Key.html")),
+    #paste0(print.link("HTML", "QG3_Plink_Population_Structure_practical_Key.html")),
     "",
-    #paste0(print.link("HTML", "Session03_practical_Key.html")),
+    #paste0(print.link("HTML", "QG3_Relatedness_REGENIE_practical_Key.html")),
     ""
-    #paste0(print.link("HTML", "SISGM19_prac4Solution.html"))
+    #paste0(print.link("HTML", "QG3_RV_tests_practical.html"))
   )
  , check.names = FALSE ) %>%
 knitr::kable("html", escape = FALSE, 
@@ -121,34 +121,35 @@ data.frame(
   Time = c("8:30am-10am", "10:30am-12pm", "1:30pm-3pm", "3:30pm-5pm"),
   Session = 4 + 1:4,
   Topic = c(
+    "Beyond traditional GWAS: Variance QTL, Interaction Testing, GWAX, Time-to-event, Multi-trait analysis",
     "Downstream analyses: Conditional Analyses, Colocalization, Fine-mapping, Gene-based & Pathways Analysis",
     "Downstream analyses: Polygenic Risk Scores",
-    "Rare Variant Analysis: Collapsing Tests, Kernel (Variance Component) Tests and Omnibus Tests",
     "Emerging issues showcasing ongoing research"
     ),
   Lecture = c(
-    paste0(print.link("Lecture", "https://gatech.box.com/s/6id19t1c5bibu902g8rua74nz0030cho")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/m26dqx4zr3m6bzumzo70aaznijw4r4wc")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/23oaznfpqo3yednenbp43c1dg3idi9jv")),
-    paste0(print.link("Lecture", "https://gatech.box.com/s/hgw8lvnxf88ecmasxa9v0ypa5tjm1oiq"))
+    paste0(print.link("Lecture", "https://gatech.box.com/s/04qa51r6tw7prfhdflc1taroim6jaudv")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/k4q4mtscwa9txdcc6qdxiviyrzob3djf")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/gr7jq894brykdq4s64nqd09b5guateel")),
+""
       ),
   "Exercises" = c(
-    paste0(print.link("Exercises", "SISGM15_prac5.html")),
-    paste0(print.link("Exercises", "SISGM15_prac6.html")),
-    paste0(print.link("Exercises", "Session07_practical.html")),
-    paste0(print.link("Exercises", "Session08_practical.html"))
+    paste0(print.link("Exercises", "QG3_Beyond_Standard_GWAS_practical.html")),
+    paste0(print.link("Exercises", "QG3_Downstream-Analyses_practical.html")),
+    paste0(print.link("Exercises", "QG3_Polygenic_Scores_practical.html")),
+    ""
   ),
   "Key" = c(
-    "N/A" , 
-    "N/A" ,
     "",
-    #paste0(print.link("HTML", "Session07_practical_Key.html")),
-    ""
-    #paste0(print.link("HTML", "Session08_practical_Key.html"))
+    #paste0(print.link("HTML", "QG3_Beyond_Standard_GWAS_practical_Key.html")),
+    "",
+    #paste0(print.link("HTML", "QG3_Downstream-Analyses_practical_Key.html")),
+    "",
+    #paste0(print.link("HTML", "QG3_Polygenic_Scores_practical_Key.html")),
+""
   )
   , check.names = FALSE) %>%
 knitr::kable("html", escape = FALSE, 
-  caption = "Tuesday, June 12th", 
+  caption = "Tuesday, June 10th", 
   align = c('l', 'c', 'l', 'l', 'l')
 ) %>%
 kableExtra::kable_styling(bootstrap_options = c("hover", "condensed","striped"))
@@ -159,21 +160,22 @@ data.frame(
   Time = c("8:30am-10am", "10:30am-12pm"),
   Session = 8 + 1:2,
   Topic = c(
-    "Beyond traditional GWAS: Variance QTL, Interaction Testing, GWAX, Time-to-event, Multi-trait analysis",
+    "Power, Sample Size & Design Considerations",
     "Emerging issues showcasing ongoing research"
     ),
   Lecture = c(
-    paste0(print.link("Lecture", "https://gatech.box.com/s/gimv6rcoiiz5ywkznx8999c76drfrrlv")),
-    "Lecture" 
+    paste0(print.link("Lecture", "https://gatech.box.com/s/bmpoetpkm2bk3p2km5q7d8wth07vuuum")),
+    paste0(print.link("Lecture", "https://gatech.box.com/s/jyw7gswr67n01zr1rt8b16xr8ptjdgaj"))
       ),
   "Exercises" = c(
-    paste0(print.link("Exercises", "SISGM15_prac9.html")),
-    " "
+    paste0(print.link("Exercises", "QG3_Power-Design_practical.html")),
+    paste0(print.link("Exercises", "QG3_CC_Imbalance_practical_Key.html"))
   ),
   "Key" = c(
     "" , 
-    #paste0(print.link("HTML", "SISGM19_prac9Solution.html")),
-    " "
+    #paste0(print.link("HTML", "QG3_Power-Design_practical_Key.html")),
+    "" 
+    #paste0(print.link("HTML", "QG3_CC_Imbalance_practical_Key.html"))
   )
   , check.names = FALSE) %>%
 knitr::kable("html", escape = FALSE, 
@@ -186,7 +188,7 @@ kableExtra::kable_styling(bootstrap_options = c("hover", "condensed","striped"))
 
 ## Datasets
 
-All the data sets used can be downloaded from the [Box folder](https://gatech.box.com/s/l9rfqhs8v4o9j8bm9qg6conm4zax7rnp) for the class.
+All the data sets used can be downloaded from the [Box folder](https://gatech.box.com/s/s6m0970432k5pcrgx2xigng6acjpuo54) for the class.
 
 ## Additional resources
 
