@@ -152,7 +152,7 @@ write(causals,paste0(datPath,"/causals.snplist")) ## list of causal SNPs
 
 ```{R, eval=FALSE}
 ## Set path for PLINK
-plink   <- "/data/SISG2023M15/exe/plink"
+plink   <- "exe/plink"
 
 ## Simulate and write LD ref
 simLDref <- function(Nldref){
@@ -199,13 +199,13 @@ ls -lt ldRef.*
 You can now run COJO. Either from the terminal
 
 ```{bash, eval=FALSE}
-GCTA=/data/SISG2023M15/exe/gcta-1.94.1
+GCTA=exe/gcta-1.94.1
 ${GCTA} --bfile ldRef --cojo-file GWAS.ma --chr 10 --cojo-slct --cojo-p 2.5e-5 --out test1
 ```
 
 or from `R` (calling terminal using the `system()` command)
 ```{R, eval=FALSE}
-gcta <- "/data/SISG2023M15/exe/gcta-1.94.1"
+gcta <- "exe/gcta-1.94.1"
 
 system(paste0(gcta," --bfile ldRef ",
               "--cojo-file GWAS.ma --chr 10 ",
