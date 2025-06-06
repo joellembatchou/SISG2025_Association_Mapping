@@ -130,7 +130,7 @@ data.frame(
     paste0(print.link("Lecture", "https://gatech.box.com/s/04qa51r6tw7prfhdflc1taroim6jaudv")),
     paste0(print.link("Lecture", "https://gatech.box.com/s/k4q4mtscwa9txdcc6qdxiviyrzob3djf")),
     paste0(print.link("Lecture", "https://gatech.box.com/s/gr7jq894brykdq4s64nqd09b5guateel")),
-""
+    paste0(print.link("Lecture", "https://gatech.box.com/s/f9hhb4cjnumy4i7yp7hgxcyv3fgwo9xf"))
       ),
   "Exercises" = c(
     paste0(print.link("Exercises", "QG3_Beyond_Standard_GWAS_practical.html")),
