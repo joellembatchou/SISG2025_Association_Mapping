@@ -99,8 +99,7 @@ data.frame(
     paste0(print.link("Exercises", "QG3_RV_tests_practical.html"))
   ),
   "Key" = c(
-    "",
-    #paste0(print.link("HTML", "QG3_Association_Testing_practical_Key.html")),
+    paste0(print.link("HTML", "QG3_Association_Testing_practical_Key.html")),
     "",
     #paste0(print.link("HTML", "QG3_Plink_Population_Structure_practical_Key.html")),
     "",
