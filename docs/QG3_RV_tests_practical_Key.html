@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+
+<title>Practical 7 Key - Rare Variant Analysis</title>
+
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SISG 2025 QG3</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Day 1</li>
+    <li>
+      <a href="QG3_Association_Testing_practical.html">Session 1</a>
+    </li>
+    <li>
+      <a href="QG3_Plink_Population_Structure_practical.html">Session 2</a>
+    </li>
+    <li>
+      <a href="QG3_Relatedness_REGENIE_practical.html">Session 3</a>
+    </li>
+    <li>
+      <a href="QG3_RV_tests_practical.html">Session 4</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Day 2</li>
+    <li>
+      <a href="QG3_Beyond_Standard_GWAS_practical.html">Session 5</a>
+    </li>
+    <li>
+      <a href="QG3_Downstream-Analyses_practical.html">Session 6</a>
+    </li>
+    <li>
+      <a href="QG3_Polygenic_Scores_practical.html">Session 7</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Day 3</li>
+    <li>
+      <a href="QG3_Power-Design_practical.html">Session 9</a>
+    </li>
+    <li>
+      <a href="QG3_CC_Imbalance_practical_Key.html">Session 10</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/joellembatchou/SISG2025_Association_Mapping">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Practical 7 Key - Rare Variant
+Analysis</h1>
+<h4 class="author"></h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-06-01
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong>
+<code>SISG2025_Association_Mapping/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20230530code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20230530)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20230530code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20230530)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree421fcd0acf1b40a567c813b930acd5b9eb5bb768targetblank421fcd0a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/421fcd0acf1b40a567c813b930acd5b9eb5bb768" target="_blank">421fcd0</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree421fcd0acf1b40a567c813b930acd5b9eb5bb768targetblank421fcd0a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/421fcd0acf1b40a567c813b930acd5b9eb5bb768" target="_blank">421fcd0</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .qodo/
+    Ignored:    analysis/.DS_Store
+    Ignored:    data/run_regenie.r
+    Ignored:    data/sim_rels_geno.bed
+    Ignored:    exe/
+    Ignored:    gwas_plink.log
+    Ignored:    gwas_regenie.log
+    Ignored:    ldRef.log
+    Ignored:    lectures/
+    Ignored:    mk_website.R
+    Ignored:    notes.txt
+    Ignored:    step2_gwas_regenie.log
+    Ignored:    test1.log
+    Ignored:    test2.log
+    Ignored:    test3.log
+    Ignored:    test4.log
+    Ignored:    tmp/
+
+Untracked files:
+    Untracked:  .mk_website.R.swp
+    Untracked:  GWAS.ma
+    Untracked:  _workflowr.yml
+    Untracked:  analysis/.index.Rmd.swp
+    Untracked:  analysis/QG3_Association_Testing_practical_Key.Rmd
+    Untracked:  analysis/QG3_Beyond_Standard_GWAS_practical_Key.Rmd
+    Untracked:  analysis/QG3_CC_Imbalance_practical_Key.Rmd
+    Untracked:  analysis/QG3_Downstream-Analyses_practical_Key.Rmd
+    Untracked:  analysis/QG3_Plink_Population_Structure_practical_Key.Rmd
+    Untracked:  analysis/QG3_Plink_Population_Structure_practical_Key_cache/
+    Untracked:  analysis/QG3_Polygenic_Scores_practical_Key.Rmd
+    Untracked:  analysis/QG3_Power-Design_practical_Key.Rmd
+    Untracked:  analysis/QG3_RV_tests_practical_Key.Rmd
+    Untracked:  analysis/QG3_Relatedness_REGENIE_practical_Key.Rmd
+    Untracked:  causals.snplist
+    Untracked:  ldRef.bed
+    Untracked:  ldRef.bim
+    Untracked:  ldRef.fam
+    Untracked:  ldRef.map
+    Untracked:  ldRef.ped
+    Untracked:  sim.config
+    Untracked:  test1.cma.cojo
+    Untracked:  test1.jma.cojo
+    Untracked:  test1.ldr.cojo
+    Untracked:  test2.cma.cojo
+    Untracked:  test2.jma.cojo
+    Untracked:  test2.ldr.cojo
+    Untracked:  test3.cma.cojo
+    Untracked:  test3.jma.cojo
+    Untracked:  test3.ldr.cojo
+    Untracked:  test4.cma.cojo
+    Untracked:  test4.jma.cojo
+    Untracked:  test4.ldr.cojo
+
+Unstaged changes:
+    Modified:   analysis/QG3_Downstream-Analyses_practical.Rmd
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<p>Before you begin:</p>
+<ul>
+<li>Make sure that R is installed on your computer</li>
+<li>For this lab, we will use the following R libraries:</li>
+</ul>
+<pre class="r"><code>library(data.table)
+library(dplyr)
+library(BEDMatrix)
+library(SKAT)
+library(ACAT)
+library(ggplot2)</code></pre>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>We will look into a dataset collected on a quantitative phenotype
+which was first analyzed through GWAS and a signal was detected in a
+region on chromosome 1. Let’s determine whether the signal is present
+when we focus on rare variation at the locus. In our analyses,
+<strong><em>we will define rare variants as those with <span
+class="math inline">\(MAF \leq 5\%\)</span></em></strong>.</p>
+<p>The file <a
+href="https://github.com/joellembatchou/SISG2024_Association_Mapping/tree/master/data">“rv_pheno.txt”</a>”
+contains the phenotype measurements for a set of individuals and the
+file <a
+href="https://github.com/joellembatchou/SISG2024_Association_Mapping/tree/master/data">“rv_geno_chr1.bed”</a>
+is a binary file in PLINK BED format with accompanying BIM and FAM files
+which contains the genotype data.</p>
+<div id="data-preparation" class="section level3">
+<h3>Data preparation</h3>
+<p>Let’s first load the files into the R session. We first need to
+define the path to the directory containing the phenotype and genotype
+files <strong>(change the path to the files location on your
+machine)</strong>.</p>
+<pre class="r"><code>files_dir &lt;- &quot;/SISGM19/data/&quot; </code></pre>
+<p>Also specify the paths to the PLINK2 binary:</p>
+<pre class="r"><code>plink2_binary &lt;- &quot;/SISGM19/bin/plink2&quot; </code></pre>
+<p>We can now read the phenotype file:</p>
+<pre class="r"><code>pheno_file &lt;- fread(sprintf(&quot;%s/rv_pheno.txt&quot;, files_dir), header = TRUE) 
+head(pheno_file, 3)</code></pre>
+<pre><code>    FID  IID       Pheno
+1: 5257 5257  0.73085382
+2: 4686 4686  0.38374848
+3: 5818 5818 -0.03473697</code></pre>
+</div>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+</div>
+</div>
+<div id="exercises-1" class="section level2">
+<h2>Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Using PLINK, extract <strong>rare variants</strong> in a new PLINK
+BED file. We use options <code>--max-maf</code> to select rare variants
+and <code>--maj-ref force</code> so that the minor allele is the effect
+allele.</li>
+</ol>
+<pre class="r"><code># first fill in the thresholds to use for each filter
+filter_maf = 0.05
+
+cmd &lt;- sprintf(&#39;%s --bfile &quot;%s/rv_geno_chr1&quot; --max-maf %g --maj-ref force --make-bed --out chr1_region_rv&#39;, plink2_binary, files_dir, filter_maf)
+system(cmd)</code></pre>
+<p>This generates a new set of PLINK BED genotype files containing only
+the variants that passed the MAF filter
+<code>chr1_region_rv.{bed,bim,fam}</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Import the data files in R.</li>
+</ol>
+<ul>
+<li>Read the genotype data using R function <code>BEDMatrix()</code>. We
+use option <code>simple_names = TRUE</code> to easily filter by sample
+IDs later.</li>
+</ul>
+<pre class="r"><code>G &lt;- BEDMatrix(&quot;chr1_region_rv&quot;, simple_names = TRUE)</code></pre>
+<pre><code>Extracting number of samples and rownames from chr1_region_rv.fam...</code></pre>
+<pre><code>Extracting number of variants and colnames from chr1_region_rv.bim...</code></pre>
+<ul>
+<li>Keep only samples who are present both in the genotype as well as
+phenotype data and who don’t have missing values for the phenotype.</li>
+</ul>
+<pre class="r"><code># identify ID of samples with non-missing phenotypes
+ids.keep &lt;- with(pheno_file, IID[ !is.na(Pheno) ])
+# subset the genotype &amp; phenotype data based on IDs
+G &lt;- G[match(ids.keep, rownames(G)), ]
+pheno_file &lt;- pheno_file[match(ids.keep, pheno_file$IID), ] </code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Examine the genotype data:</li>
+</ol>
+<ul>
+<li>Compute the minor allele frequency (MAF) for each SNP and plot
+histogram. We use the <code>colMeans()</code> function to G and specify
+the argument na.rm = TRUE in case missing genotypes are present.</li>
+</ul>
+<pre class="r"><code># Recall the MAF formula: maf(g) = sum(g) / (2*N) = mean(g) / 2
+maf &lt;- colMeans(G, na.rm=TRUE)/2
+# we can use the &#39;hist&#39; function in R to plot histograms
+hist(maf, xlab = &quot;Minor allele frequencies&quot;, main = &quot;Distribution of MAF&quot;)</code></pre>
+<p><img src="figure/QG3_RV_tests_practical_Key.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Run the single variant association tests in PLINK (only for the
+extracted variants).</li>
+</ol>
+<pre class="r"><code>cmd &lt;- sprintf(&quot;%s --bfile chr1_region_rv --pheno %s/rv_pheno.txt --pheno-name Pheno --glm allow-no-covars  --out test_plink&quot;, plink2_binary, files_dir)
+system(cmd)
+sv_pvals &lt;- fread(&quot;test_plink.Pheno.glm.linear&quot;)
+str(sv_pvals) # what variables are used to store p-values and effect sizes?</code></pre>
+<pre><code>Classes &#39;data.table&#39; and &#39;data.frame&#39;:  56 obs. of  16 variables:
+ $ #CHROM          : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ POS             : int  12030946 12032428 12057950 12095233 12100532 12110879 12121069 12137783 12137898 12143774 ...
+ $ ID              : chr  &quot;1:12030946:T:C&quot; &quot;1:12032428:A:C&quot; &quot;1:12057950:C:T&quot; &quot;1:12095233:A:C&quot; ...
+ $ REF             : chr  &quot;C&quot; &quot;C&quot; &quot;T&quot; &quot;C&quot; ...
+ $ ALT             : chr  &quot;T&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; ...
+ $ PROVISIONAL_REF?: chr  &quot;Y&quot; &quot;Y&quot; &quot;Y&quot; &quot;Y&quot; ...
+ $ A1              : chr  &quot;T&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; ...
+ $ OMITTED         : chr  &quot;C&quot; &quot;C&quot; &quot;T&quot; &quot;C&quot; ...
+ $ A1_FREQ         : num  0.00498 0.00854 0.00789 0.00593 0.00628 ...
+ $ TEST            : chr  &quot;ADD&quot; &quot;ADD&quot; &quot;ADD&quot; &quot;ADD&quot; ...
+ $ OBS_CT          : int  9949 9949 9949 9949 9949 9949 9949 9949 9949 9949 ...
+ $ BETA            : num  0.0557 0.0642 -0.3236 -0.076 -0.1003 ...
+ $ SE              : num  0.1021 0.0773 0.0802 0.0936 0.091 ...
+ $ T_STAT          : num  0.546 0.831 -4.035 -0.812 -1.103 ...
+ $ P               : num  0.585383 0.406254 0.000055 0.416873 0.270211 ...
+ $ ERRCODE         : chr  &quot;.&quot; &quot;.&quot; &quot;.&quot; &quot;.&quot; ...
+ - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt; </code></pre>
+<ul>
+<li>What would be your significance threshold after applying Bonferroni
+correction for the multiple tests (assume the nominal significance level
+is 0.05)? Is anything significant after this correction?</li>
+</ul>
+<pre class="r"><code># determine the appropriate significance threshold
+bonf_threshold &lt;- 0.05 / length(sv_pvals$P) 
+bonf_threshold</code></pre>
+<pre><code>[1] 0.0008928571</code></pre>
+<pre class="r"><code>sv_pvals[ sv_pvals$P &lt; bonf_threshold, ]</code></pre>
+<pre><code>   #CHROM      POS             ID REF ALT PROVISIONAL_REF? A1 OMITTED
+1:      1 12057950 1:12057950:C:T   T   C                Y  C       T
+2:      1 12183493 1:12183493:G:A   A   G                Y  G       A
+3:      1 12360016 1:12360016:G:A   A   G                Y  G       A
+4:      1 12405413 1:12405413:T:C   C   T                Y  T       C
+5:      1 12639385 1:12639385:G:A   A   G                Y  G       A
+6:      1 12734720 1:12734720:A:C   C   A                Y  A       C
+      A1_FREQ TEST OBS_CT      BETA        SE   T_STAT           P ERRCODE
+1: 0.00789024  ADD   9949 -0.323574 0.0801934 -4.03492 5.50288e-05       .
+2: 0.00773947  ADD   9949  0.274311 0.0814842  3.36643 7.64368e-04       .
+3: 0.00643281  ADD   9949 -0.310260 0.0898433 -3.45335 5.55975e-04       .
+4: 0.00487486  ADD   9949  0.359249 0.1019850  3.52258 4.29282e-04       .
+5: 0.00567896  ADD   9949  0.391421 0.0955243  4.09761 4.20759e-05       .
+6: 0.00849332  ADD   9949 -0.278236 0.0769709 -3.61482 3.02042e-04       .</code></pre>
+<ul>
+<li>Make a volcano plot (i.e. plot log10 p-values against the effect
+sizes). Which of the Burden/SKAT/ACAT tests do you expect will give us
+most power?</li>
+</ul>
+<pre class="r"><code>with(sv_pvals, plot(x=BETA, y=-log10(sv_pvals$P), xlab = &quot;Effect size&quot;, ylab = &quot;-log10P&quot;)) </code></pre>
+<p><img src="figure/QG3_RV_tests_practical_Key.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>We will first compare three collapsing/burden approaches:</li>
+</ol>
+<ul>
+<li>CAST (Binary collapsing approach): for each individual, count if
+they have a rare allele at any of the sites</li>
+<li>MZ Test/GRANVIL (Count based collapsing): for each individual, count
+the total number of sites where a rare allele is present</li>
+<li>Weighted burden test: for each individual, take a weighted count of
+the rare alleles across sites (for the weights, use
+<code>weights &lt;- dbeta(MAF, 1, 25)</code>)</li>
+</ul>
+<p>For each approach, first need to generate the burden scores.</p>
+<pre class="r"><code># CAST : count number of rare alleles for each person and determine if it is &gt; 0
+sum_alleles_per_sample &lt;- rowSums(G)
+burden.cast &lt;- as.numeric( sum_alleles_per_sample &gt; 0 )
+
+# MZ : count number of sites with rare alleles for each person
+burden.mz &lt;- rowSums(G &gt; 0)
+
+# Weighted burden : weighted sum of genotype counts across sites
+weights &lt;- dbeta(maf, 1, 25) 
+burden.weighted &lt;- G %*% weights</code></pre>
+<p>Run a test for association between the phenotype and each burden
+score using the <code>lm()</code> R function, e.g.</p>
+<pre class="r"><code># e.g. for CAST
+summary(lm(pheno_file$Pheno ~ burden.cast))</code></pre>
+<pre><code>
+Call:
+lm(formula = pheno_file$Pheno ~ burden.cast)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.9531 -0.6880  0.0012  0.6822  3.6581 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 0.002423   0.015317   0.158    0.874
+burden.cast 0.017757   0.020422   0.870    0.385
+
+Residual standard error: 1.01 on 9947 degrees of freedom
+Multiple R-squared:  7.6e-05,   Adjusted R-squared:  -2.452e-05 
+F-statistic: 0.7561 on 1 and 9947 DF,  p-value: 0.3846</code></pre>
+<pre class="r"><code># for MZ
+summary(lm(pheno_file$Pheno ~ burden.mz))</code></pre>
+<pre><code>
+Call:
+lm(formula = pheno_file$Pheno ~ burden.mz)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.9521 -0.6894 -0.0013  0.6805  3.6591 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 0.001444   0.013700   0.105    0.916
+burden.mz   0.013492   0.011346   1.189    0.234
+
+Residual standard error: 1.01 on 9947 degrees of freedom
+Multiple R-squared:  0.0001421, Adjusted R-squared:  4.162e-05 
+F-statistic: 1.414 on 1 and 9947 DF,  p-value: 0.2344</code></pre>
+<pre class="r"><code># Weighted burden
+summary(lm(pheno_file$Pheno ~ burden.weighted))</code></pre>
+<pre><code>
+Call:
+lm(formula = pheno_file$Pheno ~ burden.weighted)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.9519 -0.6896 -0.0014  0.6804  3.6593 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)     0.0012244  0.0136778   0.090    0.929
+burden.weighted 0.0006577  0.0005402   1.217    0.223
+
+Residual standard error: 1.01 on 9947 degrees of freedom
+Multiple R-squared:  0.000149,  Adjusted R-squared:  4.846e-05 
+F-statistic: 1.482 on 1 and 9947 DF,  p-value: 0.2235</code></pre>
+<p>Looking further at the weighted burden variant weights</p>
+<pre class="r"><code># across a wide MAF range
+maf_ranges &lt;- seq(.01,.5, length=100)
+plot(dbeta(maf_ranges, 1, 25)  ~ maf_ranges, type = &quot;l&quot;, xlab = &quot;MAF&quot;, ylab = &quot;Variant weights in weighted burden test&quot;)
+points(weights ~ maf, col = &quot;red&quot;, pch = 18)</code></pre>
+<p><img src="figure/QG3_RV_tests_practical_Key.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># only looking at variants in the data
+plot(weights ~ maf, col = &quot;red&quot;, pch = 18, xlab = &quot;MAF&quot;, ylab = &quot;Variant weights in weighted burden test&quot;)</code></pre>
+<p><img src="figure/QG3_RV_tests_practical_Key.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Now use SKAT to test for an association.</li>
+</ol>
+<pre class="r"><code># first fit the null model
+skat.null &lt;- SKAT_Null_Model( pheno_file$Pheno ~ 1 , out_type = &quot;C&quot;)
+# Run SKAT association test (returns a list - p-value is in `$p.value`)
+skat_sumstats &lt;- SKAT(G, skat.null )
+str(skat_sumstats)</code></pre>
+<pre><code>List of 7
+ $ p.value           : num 8.75e-11
+ $ p.value.resampling: NULL
+ $ Test.Type         : chr &quot;davies&quot;
+ $ Q                 : num [1, 1] 4833265
+ $ param             :List of 4
+  ..$ liu_pval     : num 8.75e-11
+  ..$ Is_Converged : num 0
+  ..$ n.marker     : int 56
+  ..$ n.marker.test: int 56
+ $ pval.zero.msg     : NULL
+ $ test.snp.mac      : Named num [1:56] 99 170 157 118 125 161 126 160 114 125 ...
+  ..- attr(*, &quot;names&quot;)= chr [1:56] &quot;1:12030946:T:C&quot; &quot;1:12032428:A:C&quot; &quot;1:12057950:C:T&quot; &quot;1:12095233:A:C&quot; ...
+ - attr(*, &quot;class&quot;)= chr &quot;SKAT_OUT&quot;</code></pre>
+<pre class="r"><code>skat_sumstats$p.value</code></pre>
+<pre><code>[1] 8.745405e-11</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Run the omnibus SKAT, but consider setting <span
+class="math inline">\(\rho\)</span> (i.e.<code>r.corr</code>) to 0 and
+then 1.</li>
+</ol>
+<ul>
+<li>Compare the results to using the CAST,MZ/GRANVIL and Weighted burden
+collapsing approaches in Question 5 as well as SKAT in Question 6. What
+tests do these <span class="math inline">\(\rho\)</span> values
+correspond to?</li>
+</ul>
+<pre class="r"><code># Example for rho = 0
+rho &lt;- 0
+skat_sumstats_rho &lt;- SKAT(G, skat.null, r.corr = rho )
+skat_sumstats_rho$p.value # = SKAT test</code></pre>
+<pre><code>[1] 8.745405e-11</code></pre>
+<pre class="r"><code>rho &lt;- 1
+skat_sumstats_rho &lt;- SKAT(G, skat.null, r.corr = rho )
+skat_sumstats_rho$p.value # = weighted burden test</code></pre>
+<pre><code>[1] 0.2234603</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Now consider the omnibus version of SKAT, but use the “optimal.adj”
+approach which searches across a range of rho values.</li>
+</ol>
+<pre class="r"><code># Run SKATO association test using grid of rho values
+skat_sumstats_rho_grid &lt;- SKAT(G, skat.null, method=&quot;optimal.adj&quot;)
+skat_sumstats_rho_grid$p.value</code></pre>
+<pre><code>[1] 6.121784e-10</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>Run ACATV on the single variant p-values. The basic command would
+look like</li>
+</ol>
+<pre class="r"><code># `weights` vector is from Question 5
+acat.weights &lt;- weights * weights * maf * (1 - maf)
+ACAT(sv_pvals$P, weights = acat.weights)</code></pre>
+<pre><code>[1] 0.00112117</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Run ACATO combining the SKAT and BURDEN p-values (from Question 7)
+with the ACATV p-value (from Question 9).</li>
+</ol>
+<pre class="r"><code># Fill in the p-values
+SKAT_pvalue &lt;- 8.745405e-11
+Burden_pvalue &lt;- 0.2234603
+ACATV_pvalue &lt;- 0.00112117
+# compute ACATO
+ACAT( c(SKAT_pvalue, Burden_pvalue, ACATV_pvalue) )</code></pre>
+<pre><code>[1] 2.623621e-10</code></pre>
+<div id="extra" class="section level3">
+<h3>Extra</h3>
+<p>You can explore the impact of different genetic architectures by
+analyzing 3 simulated phenotypes in <a
+href="https://gatech.box.com/s/espcwnlibsw62xoiqska9ib9iccxs5fk">“data/rv_pheno_extended.txt”</a>.
+More specifically, you can run the same analyses done above for each of
+these traits and compare the performance of the tests relative to how
+variant effects were simulated:</p>
+<ul>
+<li>“Pheno_sparse”: a single causal variant (i.e. sparse genetic
+architecture)</li>
+<li>“Pheno_burden_skat”: 60% of the variant are causal, and they all
+have positive effects on the trait</li>
+<li>“Pheno_skat”: 20% of the variants are causal and the effect
+direction (+/-) is randomly assigned</li>
+</ul>
+<p>Here is R code used to generate the phenotypes:</p>
+<pre class="r"><code>G &lt;- BEDMatrix::BEDMatrix(&quot;data/rv_geno_chr1&quot;, simple_names = TRUE)
+N &lt;- nrow(G)
+nsnps &lt;- ncol(G)
+
+# Parameters to change
+# sparse : set n.causal = 1
+# burden_skat : set prop_causal=0.6 and prop_pos_beta=1
+# skat : set prop_causal=0.2 and prop_pos_beta=0.5
+prop_causal &lt;- 1
+prop_pos_beta &lt;- 1
+h2g &lt;- 0.01
+
+n.causal &lt;- round(nsnps * prop_causal)
+causal.index &lt;- sample(ncol(G), n.causal)
+
+b_snp &lt;- sqrt(h2g/n.causal)
+beta &lt;- rep(b_snp, n.causal)
+beta_sign &lt;- sample(c(rep(1, round(n.causal * prop_pos_beta)), rep(-1, n.causal - round(n.causal * prop_pos_beta))))
+h2e &lt;- 1 - h2g
+
+y &lt;- scale(G[, causal.index]) %*% beta + rnorm(N, sd = sqrt(h2e))</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.3.0 (2023-04-21)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS 14.7.4
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/Chicago
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] ggplot2_3.4.2     ACAT_0.91         SKAT_2.2.5        RSpectra_0.16-1  
+[5] SPAtest_3.1.2     Matrix_1.5-4      BEDMatrix_2.0.3   dplyr_1.1.2      
+[9] data.table_1.14.8
+
+loaded via a namespace (and not attached):
+ [1] sass_0.4.6       utf8_1.2.3       generics_0.1.3   stringi_1.7.12  
+ [5] lattice_0.21-8   digest_0.6.31    magrittr_2.0.3   evaluate_0.21   
+ [9] grid_4.3.0       fastmap_1.1.1    rprojroot_2.0.3  workflowr_1.7.0 
+[13] jsonlite_1.8.5   promises_1.2.0.1 fansi_1.0.4      scales_1.2.1    
+[17] jquerylib_0.1.4  cli_3.6.1        rlang_1.1.1      munsell_0.5.0   
+[21] withr_2.5.0      cachem_1.0.8     yaml_2.3.7       tools_4.3.0     
+[25] colorspace_2.1-0 httpuv_1.6.11    crochet_2.3.0    vctrs_0.6.2     
+[29] R6_2.5.1         lifecycle_1.0.3  git2r_0.32.0     stringr_1.5.0   
+[33] fs_1.6.2         pkgconfig_2.0.3  pillar_1.9.0     bslib_0.5.0     
+[37] later_1.3.1      gtable_0.3.3     glue_1.6.2       Rcpp_1.0.10     
+[41] highr_0.10       xfun_0.39        tibble_3.2.1     tidyselect_1.2.0
+[45] rstudioapi_0.14  knitr_1.43       htmltools_0.5.5  rmarkdown_2.22  
+[49] compiler_4.3.0  </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
