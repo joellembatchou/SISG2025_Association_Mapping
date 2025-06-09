@@ -6,3 +6,4 @@ data/sim_rels_geno.bed
 *.log
 data/run_regenie.r
 notes.txt
+analysis/*_practical_Key.Rmd
