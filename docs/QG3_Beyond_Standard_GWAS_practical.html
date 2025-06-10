@@ -561,15 +561,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree24dbebb0b69ab5d78f3760cf1718ff634ae1b83atargetblank24dbebba">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree778c35368446eed80ec7ce9c47c5d887aa557738targetblank778c353a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/24dbebb0b69ab5d78f3760cf1718ff634ae1b83a" target="_blank">24dbebb</a>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/778c35368446eed80ec7ce9c47c5d887aa557738" target="_blank">778c353</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree24dbebb0b69ab5d78f3760cf1718ff634ae1b83atargetblank24dbebba"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjoellembatchouSISG2025AssociationMappingtree778c35368446eed80ec7ce9c47c5d887aa557738targetblank778c353a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -579,7 +579,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/24dbebb0b69ab5d78f3760cf1718ff634ae1b83a" target="_blank">24dbebb</a>.
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/tree/778c35368446eed80ec7ce9c47c5d887aa557738" target="_blank">778c353</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -665,6 +665,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/joellembatchou/SISG2025_Association_Mapping/blob/778c35368446eed80ec7ce9c47c5d887aa557738/analysis/QG3_Beyond_Standard_GWAS_practical.Rmd" target="_blank">778c353</a>
+</td>
+<td>
+Joelle Mbatchou
+</td>
+<td>
+2025-06-10
+</td>
+<td>
+fix problem#5
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/joellembatchou/SISG2025_Association_Mapping/d6b5ac813f57156c92db43d9947117c7c75600ec/docs/QG3_Beyond_Standard_GWAS_practical.html" target="_blank">d6b5ac8</a>
+</td>
+<td>
+Joelle Mbatchou
+</td>
+<td>
+2025-06-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -809,26 +843,43 @@ boxplot(phenotype[,trait_name] ~ genotype[,&quot;SNP1&quot;], data = simulated_d
 <div id="testing-for-mean-qtl" class="section level2">
 <h2>Testing for (mean) QTL</h2>
 <p>We use of <code>lm()</code> in R to assess phenotypic mean
-differences across genotypes for each variant. Based on the parameters
-used in the simulation, would we expect significant result when testing
-the causal SNP1?</p>
+differences across genotypes for each variant.</p>
+<p><strong>Copy/Run the following command to enable the
+<code>lm_test</code> function in your current <code>R</code>
+environment.</strong></p>
+<pre class="r"><code># This function applies linear regression test to each of the simulated variant for a given trait
+# trait_name = {&quot;Y_vQTL&quot;, &quot;Y_gxe&quot;}
+lm_test &lt;- function(data, trait_name) {
+  
+  p_values &lt;- rep(NA, n_snps)
+  names(p_values) &lt;- colnames(data$genotype)
+
+  for(i in 1:n_snps){
+    p_values[i] &lt;- summary(lm(phenotype[, trait_name] ~ genotype[,i], data = data))$coef[2,4]
+  }
+  
+  # Return the p-values
+  return(p_values)
+}</code></pre>
+<p>Based on the parameters used in the simulation, would we expect
+significant result when testing the causal SNP1?</p>
 <p>First we do it for trait “Y_vQTL” (do it again on your own for the
 other trait “Y_gxe”)</p>
 <pre class="r"><code>trait_name &lt;- &quot;Y_vQTL&quot;
-
-qtl_pvals &lt;- rep(NA, n_snps)
-names(qtl_pvals) &lt;- colnames(simulated_data$genotype)
-
-for(i in 1:n_snps){
-  qtl_pvals[i] &lt;- summary(lm(phenotype[, trait_name] ~ genotype[,i], data = simulated_data))$coef[2,4]
-}
+qtl_pvals &lt;- lm_test(data = simulated_data, trait_name =  trait_name)
 
 qtl_pvals[1] # P-value of the causal SNP1</code></pre>
 <p>You can make a qq plot to visualize the p-values highlighting the
 causal SNP1.</p>
-<pre class="r"><code>qq(qtl_pvals)
-points(-log10(ppoints(n_snps)[rank(qtl_pvals)[1]]), -log10(qtl_pvals[1]),
-       col = &quot;blue&quot;, pch = 19, cex = 1.5)</code></pre>
+<p><strong>Copy/Run the following command to enable the
+<code>plot_qq</code> function in your current <code>R</code>
+environment.</strong></p>
+<pre class="r"><code>plot_qq &lt;- function(pvals){
+  qq(pvals)
+  points(-log10(ppoints(n_snps)[rank(pvals)[1]]), -log10(pvals[1]),
+       col = &quot;blue&quot;, pch = 19, cex = 1.5)
+}</code></pre>
+<pre class="r"><code>plot_qq(qtl_pvals)</code></pre>
 </div>
 <div id="testing-for-vqtl" class="section level2">
 <h2>Testing for vQTL</h2>
@@ -866,29 +917,32 @@ levene_pvals &lt;- levene_test(data = simulated_data, trait_name =  trait_name) 
 levene_pvals[1] # P-value of the causal SNP1</code></pre>
 <p>You can make a qq plot to visualize the p-values highlighting the
 causal SNP1.</p>
-<pre class="r"><code>qq(levene_pvals)
-points(-log10(ppoints(n_snps)[rank(levene_pvals)[1]]), -log10(levene_pvals[1]),
-       col = &quot;blue&quot;, pch = 19, cex = 1.5)</code></pre>
+<pre class="r"><code>plot_qq(levene_pvals)</code></pre>
 </div>
 <div id="testing-for-gxe" class="section level2">
 <h2>Testing for GxE</h2>
 <p>We again use of <code>lm()</code> in R but this time also include an
 interaction term with the environment.</p>
+<p><strong>Copy/Run the following command to enable the
+<code>gxe_test</code> function in your current <code>R</code>
+environment.</strong></p>
+<pre class="r"><code>gxe_test &lt;- function(data, trait_name){
+  pvals &lt;- rep(NA, n_snps)
+  names(pvals) &lt;- colnames(data$genotype)
+
+  for(i in 1:n_snps){
+    pvals[i] &lt;- summary(lm(phenotype[, trait_name] ~ genotype[,i]*covariate$environment, data = data))$coef[4,4]
+  }
+  
+  return(pvals)
+}</code></pre>
 <pre class="r"><code>trait_name &lt;- &quot;Y_vQTL&quot;
-
-gxe_pvals &lt;- rep(NA, n_snps)
-names(gxe_pvals) &lt;- colnames(simulated_data$genotype)
-
-for(i in 1:n_snps){
-  gxe_pvals[i] &lt;- summary(lm(phenotype[, trait_name] ~ genotype[,i]*covariate$environment, data = simulated_data))$coef[4,4]
-}
+gxe_pvals &lt;- gxe_test(data = simulated_data, trait_name =  trait_name)
 
 gxe_pvals[1] # P-value of the causal SNP1</code></pre>
 <p>You can make a qq plot to visualize the p-values highlighting the
 causal SNP1.</p>
-<pre class="r"><code>qq(gxe_pvals)
-points(-log10(ppoints(n_snps)[rank(gxe_pvals)[1]]), -log10(gxe_pvals[1]),
-       col = &quot;blue&quot;, pch = 19, cex = 1.5)</code></pre>
+<pre class="r"><code>plot_qq(gxe_pvals)</code></pre>
 <p>Check these tests for both phenotypes <code>Y_vQTL</code> and
 <code>Y_gxe</code>.</p>
 <div id="exploration-across-scenarios" class="section level3">
