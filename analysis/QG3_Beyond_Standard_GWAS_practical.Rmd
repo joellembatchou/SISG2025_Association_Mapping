@@ -1,7 +1,7 @@
 ---
-title: 'Practical 9: Within-family GWAS'
-author: "Summer Institute of Statical Genetics (Module  15)"
-date: '2023-07-26'
+title: 'Interaction testing and vQTL'
+author: "Summer Institute of Statical Genetics (Module  QG3)"
+date: '2025-06-10'
 output:
   html_document: default
   pdf_document: default
@@ -11,125 +11,192 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<span style="color:red;">**This practical can be run in `R` on your own computer.**</span>
+Before you begin:
 
-<!-- ## Part 1: Population stratification -->
-
-This practical aims at illustrating that within-family GWAS are robust to population stratification. We provide a set of `R` commands below to simulate the phenotypes and genotypes (at $M=1,000$ SNPs) of $N=10,000$ independent sibling pairs. Each sibling pair is sampled from $g$ subgroups, which differ in allele frequencies and mean phenotypes.
-
-**None of the $M$ SNPs is associated with the trait within-each subpopulations. Therefore, the mean association $\chi^2$ test statistic across SNPs is expected to equal 1. Any deviation reflects population stratification.**
-
-The `R` function `CHISQ` below returns the mean association $\chi^2$ test statistic across $M=1,000$ simulated SNPs for 3 analytical strategies:
-
-(1) simple linear regression using phenotypes and genotypes of the oldest siblings (`X1` and `Y1`)
-
-(2) same as (1) but fitting 10 genotypic principal components (PC)
-
-(3) within-family GWAS from regressing `Y1-Y2` onto colums of `X1-X2`
-
-**Copy/Run the following command to enable the `CHISQ` function in your current `R` environment.**
-
+Make sure that R is installed on your computer
+For this lab, we will use the following R libraries:
 ```{R, eval=FALSE}
-CHISQ <- function(N=10000,  # Sample size
-                  M=1000,   # Number of SNPs tested 
-                  Fst=0.025,# Genetic differentiation between subgroups
-                  vs=.05,   # variance explained by stratification
-                  g=2,      # Number of subgroups
-                  nPC=10){  # Number of PCs fitted
-ms   <- rnorm(n=g,mean=0,sd=sqrt(vs))
-p    <- runif(n=M,min=0.05,max=0.95)
-tab  <- cut(1:N,breaks = quantile(1:N,probs = seq(0,1,len=g+1)),include.lowest = TRUE)
-grp  <- as.numeric(tab)
-
-simPS <- function(N,M,Fst,p,g){
-  a    <- p*(1-Fst)/Fst
-  b    <- (1-Fst)*(1-p)/Fst
-  tab  <- cut(1:N,breaks = quantile(1:N,probs = seq(0,1,len=g+1)),include.lowest = TRUE)
-  grp  <- as.numeric(tab)
-  n    <- as.numeric(table(tab))
-  X    <- do.call("rbind",lapply(1:g, function(k){
-    px <- rbeta(M,shape1=a,shape2=b)
-    do.call("cbind",lapply(1:M, function(j){
-      rbinom(n=n[k],size=2,prob=px[j])
-    }))
-  }))
-  return(X)
-}
-
-Xm  <- simPS(N,M,Fst,p,g) # Simulage genotypes of mother
-Xf  <- simPS(N,M,Fst,p,g) # Simulate genotyoes of father
-
-X1 <- do.call("cbind",lapply(1:M, function(j){
-  rbinom(n=N,size=1,prob=Xm[,j]/2) + rbinom(n=N,size=1,prob=Xf[,j]/2)
-}))
-
-X2 <- do.call("cbind",lapply(1:M, function(j){
-  rbinom(n=N,size=1,prob=Xm[,j]/2) + rbinom(n=N,size=1,prob=Xf[,j]/2)
-}))
-
-Y1 <- rnorm(n=N,mean=ms[grp],sd=sqrt(1-vs))
-Y2 <- rnorm(n=N,mean=ms[grp],sd=sqrt(1-vs))
-
-## PCA
-SVD <- svd(scale(X1))
-system.time( pcs <- SVD$u )
-
-PC1 <- pcs[,1] * SVD$d[1]
-PC2 <- pcs[,2] * SVD$d[2]
-plot(PC1,PC2,pch=19,cex=0.5,col=grp,axes=FALSE,
-     xlab="PC1",ylab="PC2")
-axis(1);axis(2)
-abline(h=0,v=0,col="grey")
-
-## GWAS
-gwas_pop <- do.call("rbind",lapply(1:M, function(j){
-  summary(lm(Y1~X1[,j]))$coefficients[2,]
-}))
-
-gwas_pcs <- do.call("rbind",lapply(1:M, function(j){
-  summary(lm(Y1~X1[,j] + pcs[,1:nPC]))$coefficients[2,]
-}))
-
-gwas_wf <- do.call("rbind",lapply(1:M, function(j){
-  summary(lm(I(Y1-Y2)~I(X1[,j]-X2[,j])))$coefficients[2,]
-}))
-
-ChisqUnAdj  <- mean(gwas_pop[,3]^2)
-ChisqPCAdj  <- mean(gwas_pcs[,3]^2)
-ChisqQFAM   <- mean(gwas_wf[,3]^2)
-
-return(c(UnAdj=ChisqUnAdj,PCAdj=ChisqPCAdj,QFAM=ChisqQFAM))
-} 
+library(qqman)
 ```
 
-The `CHISQ` function has 5 input parameters: `N` (sample size), `M` (number of SNPs tested), `Fst` (a parameter measuring genetic differentiation between subgroups in the sample), `vs` (variance explained by stratification) and `g` (the number of subgroups in the sample).
+This practical aims at illustrating the relationship between tests for vQTLs and tests for interaction effects. We provide a set of `R` commands below to simulate the phenotypes, genotypes and covariates (at $M=1000$ SNPs) of $N=10,000$ samples and 2 covariates. We will chose the first of the 10 SNPs to be causal (either QTL, vQTL or both). We generate two phenotypes which differ based on whether the causal variant influences the phenotypic variance of the trait directly or influences the phenotypic mean through GxE effects.
 
-Let's run a first sample with `N=10000` individuals, `g=2` subgroups in the sample, `M=1000` SNPs, `Fst=.025` and stratification explaining `vs=.05` of the phenotypic variance.
+$$
+E(Y_{vQTL}) = G\beta,\; Var(Y_{vQTL}) = 1 + G\alpha
+$$
 
-```{R, eval=FALSE}
-set.seed(27072023)
-system.time( testResults <- CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=2) )
-testResults
-```  
+$$
+E(Y_{gxe}) = G\beta + E\gamma +  (G\times E)\alpha
+$$
 
-This example generates a PCA plot (PC1 vs PC2) showing a neat separation between the two subgroups in the sample. In addition, the mean association test statistic for the unadjusted analysis is `UnAdj`~2.0, which indicates confounding due to population stratification given that none of these SNPS are associated with the phenotype. Note that the mean association test statistic is reduced to `PCAdj`~1.0, when adjusting these analyses for 10 PCs and to `ChisqQFAM`~0.9 for the within-family GWAS.
+## Simulated dataset
 
-**Question 1. Change the seed number (check the `set.seed()` function above) and run the previous command (`CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=2)`) in your own environment. Do you find consistent observations?**
-
-**Question 2. Increase the number of subgroups (e.g.. `g=5`, `g=10`, `g=50`). What can you say about the separation between subgroups on the first two PCs? Is the adjustment for 10 PCs still sufficient to control for inflation? If not, how many PCs do you need to fit and why? What do you observe for the within-family GWAS results?**
+**Copy/Run the following command to enable the `simulate_vqtl_data` function in your current `R` environment.**
 
 ```{R, eval=FALSE}
-CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=5,nPC=10)
-CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=10,nPC=10)
-CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=50,nPC=10)
+set.seed(646909) # For reproducibility
+n_individuals <- 10000
+n_snps <- 1000
 
-## Let's try fitting 50 PCs
-CHISQ(N=10000,M=1000,Fst=.025,vs=.05,g=50,nPC=50)
-```  
+# Function to simulate genotype, phenotype, and covariate data
+# Mean effect != 0 corresponds to QTL
+# Variance effect != 0 corresponds to vQTL
+simulate_vqtl_data <- function(n_individuals = 10000, n_snps = 1000, mean_effect = 1, variance_effect = 2) {
 
-**Question 3. Now set `Fst=0.1` (that would correspond to subgroups with different continental ancestries), `vs=0.1` and `g=50`. Are your conclusions from Question 2 different?**
+  # Simulate genotype data with no LD (0, 1, 2 for SNPs)
+  genotype_data <- as.data.frame(matrix(sample(0:2, n_individuals * n_snps, replace = TRUE), 
+                                        nrow = n_individuals, ncol = n_snps))
+  colnames(genotype_data) <- paste0("SNP", 1:n_snps)
+
+  # Simulate environmental covariate (e.g., smoking status)
+  covariate_data <- data.frame(
+    environment = factor(sample(c("non-smoker", "smoker"), n_individuals, replace = TRUE), levels = c("non-smoker", "smoker")),
+    age = runif(n_individuals, 40,60)
+  )
+
+  # Approach 1: Modeling SNP effect in the phenotypic variance
+  phenotype_variance <- rnorm(n_individuals, 
+                              mean = mean_effect * genotype_data$SNP1, 
+                              sd = 1 + variance_effect * genotype_data$SNP1)
+
+  # Approach 2: Modeling GxE effect in the phenotypic mean
+  phenotype_gxe <- rnorm(n_individuals, 
+                         mean = mean_effect * genotype_data$SNP1 + 
+                                variance_effect * as.numeric(covariate_data$environment) *genotype_data$SNP1, 
+                         sd = 1)
+
+  # Combine phenotypes into a data frame
+  phenotype_data <- data.frame(Y_vQTL = phenotype_variance, Y_gxe = phenotype_gxe)
+
+  # Return a list of data frames
+  return(list(genotype = genotype_data, phenotype = phenotype_data, covariate = covariate_data))
+
+}
+```
+
+The `simulate_vqtl_data` function has 4 input parameters: `n_individuals` (sample size), `n_snps` (number of SNPs tested), `mean_effect` (the effect size of the causal variant on the phenotypic mean), `variance_effect` (the effect size of the causal variant on the phenotypic variance `for phenotype Y1` OR the size of the GxE interaction effect `for phenotype Y2`).
+
+Let's run a first data set where the causal variant has no effect on the trait, i.e., `mean_effect = 0` and `variance_effect = 0`.
 
 ```{R, eval=FALSE}
-CHISQ(N=10000,M=1000,Fst=.1,vs=.1,g=50,nPC=10)
+simulated_data <- simulate_vqtl_data(mean_effect = 0, variance_effect = 0)
 ```  
-<!-- ## Part 2. GWAX -->
+
+Note: you can use `str(simulated_data)` to see a snipper of what's returned by the `simulate_vqtl_data` function.
+
+We can visualize the phenotype distribution across genotype groups for SNP1.
+```{R, eval=FALSE}
+trait_name <- "Y_vQTL"
+boxplot(phenotype[,trait_name] ~ genotype[,"SNP1"], data = simulated_data,
+        xlab = "Genotype",
+        ylab = trait_name,
+        col = c("#1f77b4", "#ff7f0e", "#2ca02c"))
+```
+
+## Testing for (mean) QTL
+
+We use of `lm()` in R to assess phenotypic mean differences across genotypes for each variant. Based on the parameters used in the simulation, would we expect significant result when testing the causal SNP1?
+
+First we do it for trait "Y_vQTL" (do it again on your own for the other trait "Y_gxe")
+```{R, eval=FALSE}
+trait_name <- "Y_vQTL"
+
+qtl_pvals <- rep(NA, n_snps)
+names(qtl_pvals) <- colnames(simulated_data$genotype)
+
+for(i in 1:n_snps){
+  qtl_pvals[i] <- summary(lm(phenotype[, trait_name] ~ genotype[,i], data = simulated_data))$coef[2,4]
+}
+
+qtl_pvals[1] # P-value of the causal SNP1
+```
+
+You can make a qq plot to visualize the p-values highlighting the causal SNP1.
+```{R, eval=FALSE}
+qq(qtl_pvals)
+points(-log10(ppoints(n_snps)[rank(qtl_pvals)[1]]), -log10(qtl_pvals[1]),
+       col = "blue", pch = 19, cex = 1.5)
+```
+
+
+## Testing for vQTL
+
+We make use of Levene's test to assess phenotypic variance differences across genotypes for each variant.
+
+**Copy/Run the following command to enable the `levene_test` function in your current `R` environment.**
+
+```{R, eval=FALSE}
+# This function applies levene test to each of the simulated variant for a given trait
+# trait_name = {"Y_vQTL", "Y_gxe"}
+levene_test <- function(data, trait_name) {
+  
+  p_values <- rep(NA, n_snps)
+  names(p_values) <- colnames(data$genotype)
+  
+  for(i in 1:n_snps){
+    # Ensure the genotype is a factor
+    factor_geno <- as.factor(data$genotype[,i])
+  
+    # Calculate the absolute deviations from the group means
+    abs_dev <- abs(data$phenotype[, trait_name] - ave(data$phenotype[, trait_name], factor_geno, FUN = mean))
+
+    # Perform an ANOVA on the absolute deviations
+    p_values[i] <- summary(aov(abs_dev ~ factor_geno))[[1]]$`Pr(>F)`[1]
+  }
+  
+  # Return the p-values
+  return(p_values)
+}
+```  
+
+Based on the parameters used in the simulation, would we expect significant result when testing the causal SNP1?
+
+```{R, eval=FALSE}
+trait_name <- "Y_vQTL"
+levene_pvals <- levene_test(data = simulated_data, trait_name =  trait_name)  # Levene's test for variance differences
+
+levene_pvals[1] # P-value of the causal SNP1
+```
+
+You can make a qq plot to visualize the p-values highlighting the causal SNP1.
+```{R, eval=FALSE}
+qq(levene_pvals)
+points(-log10(ppoints(n_snps)[rank(levene_pvals)[1]]), -log10(levene_pvals[1]),
+       col = "blue", pch = 19, cex = 1.5)
+```
+
+## Testing for GxE
+
+We again use of `lm()` in R  but this time also include an interaction term with the environment.
+
+```{R, eval=FALSE}
+trait_name <- "Y_vQTL"
+
+gxe_pvals <- rep(NA, n_snps)
+names(gxe_pvals) <- colnames(simulated_data$genotype)
+
+for(i in 1:n_snps){
+  gxe_pvals[i] <- summary(lm(phenotype[, trait_name] ~ genotype[,i]*covariate$environment, data = simulated_data))$coef[4,4]
+}
+
+gxe_pvals[1] # P-value of the causal SNP1
+```
+
+You can make a qq plot to visualize the p-values highlighting the causal SNP1.
+```{R, eval=FALSE}
+qq(gxe_pvals)
+points(-log10(ppoints(n_snps)[rank(gxe_pvals)[1]]), -log10(gxe_pvals[1]),
+       col = "blue", pch = 19, cex = 1.5)
+```
+
+
+Check these tests for both phenotypes `Y_vQTL` and `Y_gxe`.
+
+### Exploration across scenarios
+Modify `mean_effect` and `variance_effect` to simulate different scenarios:
+
+* SNP1 affects only the mean (`variance_effect = 0`).
+* SNP1 affects only the variance (`mean_effect = 0`).
+* SNP1 affects both the mean and variance.
+
+*Note: You can choose values like 0.01 or 0.1 in those scenarios (choosing too large values may lead to 0 p-values for some tests)*
