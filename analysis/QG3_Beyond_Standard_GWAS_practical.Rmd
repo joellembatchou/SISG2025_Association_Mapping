@@ -220,7 +220,7 @@ plot_qq(gxe_pvals)
 
 Check these tests for both phenotypes `Y_vQTL` and `Y_gxe`.
 
-### Exploration across scenarios
+## Exploration across scenarios
 Modify `mean_effect` and `variance_effect` to simulate different scenarios:
 
 * SNP1 affects only the mean (`variance_effect = 0`).
