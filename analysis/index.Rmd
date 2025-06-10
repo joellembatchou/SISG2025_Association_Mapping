@@ -136,8 +136,7 @@ data.frame(
   ),
   "Key" = c(
     paste0(print.link("HTML", "QG3_Beyond_Standard_GWAS_practical_Key.html")),
-    "",
-    #paste0(print.link("HTML", "QG3_Downstream-Analyses_practical_Key.html")),
+    paste0(print.link("HTML", "QG3_Downstream-Analyses_practical_Key.html")),
     "",
     #paste0(print.link("HTML", "QG3_Polygenic_Scores_practical_Key.html")),
 ""
