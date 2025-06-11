@@ -166,8 +166,7 @@ data.frame(
   ),
   "Key" = c(
     paste0(print.link("HTML", "QG3_Power-Design_practical_Key.html")),
-    "" 
-    #paste0(print.link("HTML", "QG3_CC_Imbalance_practical_Key.html"))
+    paste0(print.link("HTML", "QG3_CC_Imbalance_practical_Key.html"))
   )
   , check.names = FALSE) %>%
 knitr::kable("html", escape = FALSE, 
