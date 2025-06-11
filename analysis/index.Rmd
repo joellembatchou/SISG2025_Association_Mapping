@@ -162,11 +162,10 @@ data.frame(
       ),
   "Exercises" = c(
     paste0(print.link("Exercises", "QG3_Power-Design_practical.html")),
-    paste0(print.link("Exercises", "QG3_CC_Imbalance_practical_Key.html"))
+    paste0(print.link("Exercises", "QG3_CC_Imbalance_practical.html"))
   ),
   "Key" = c(
-    "" , 
-    #paste0(print.link("HTML", "QG3_Power-Design_practical_Key.html")),
+    paste0(print.link("HTML", "QG3_Power-Design_practical_Key.html")),
     "" 
     #paste0(print.link("HTML", "QG3_CC_Imbalance_practical_Key.html"))
   )
